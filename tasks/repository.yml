@@ -1,0 +1,5 @@
+---
+- name: Adding APT repository
+  apt_repository:
+    repo: "{{ redis_repository }}"
+    update_cache: yes

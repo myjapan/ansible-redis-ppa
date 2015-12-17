@@ -1,0 +1,69 @@
+---
+- name: Ensure Redis Sentinel working directory exists
+  file: path={{ redis_sentinel_dir }}
+        state=directory
+        owner=redis
+        group=redis
+        mode=0750
+
+- name: Configure Redis Sentinel to start at boot
+  service: name=redis-sentinel
+           enabled=yes
+
+- name: Check if log file exists
+  stat: path={{ redis_sentinel_logfile }}
+  register: redis_sentinel_logfile_stat
+
+- name: Ensure log file directory exists and has correct owner
+  file: path={{ redis_sentinel_logfile|dirname }}
+        state=directory
+        owner=redis
+        group=adm
+        mode=0750
+  when: redis_sentinel_logfile != '""'
+
+- name: Ensure log file exists and is writable by Redis Sentinel
+  file: path={{ redis_sentinel_logfile }}
+        state=touch
+        owner=redis
+        group=adm
+        mode=0640
+  when: redis_sentinel_logfile_stat.stat.exists == False and redis_sentinel_logfile != '""'
+
+- name: Ensure pidfile directory exists and has correct owner
+  file: path={{ redis_sentinel_pidfile|dirname }}
+        state=directory
+        owner=redis
+        group=redis
+        mode=0755
+
+- name: Add Redis Sentinel init config file
+  template: dest=/etc/default/redis-sentinel
+            src=etc/default/redis-sentinel.j2
+            owner=redis
+            group=redis
+            mode=0644
+  notify: restart sentinel
+
+- name: Ensure config directory exists and has corect owner
+  file: path=/etc/redis
+        state=directory
+        owner=redis
+        group=redis
+        mode=0750
+
+- name: Create Redis Sentinel configuration file
+  template: dest=/etc/redis/sentinel.conf
+            src=etc/redis/sentinel.conf.j2
+            owner=redis
+            group=redis
+            mode=0640
+  notify: restart sentinel
+
+# Flush handlers before ensuring the service is started to prevent
+# a start and then restart
+- name: Flush handlers to apply config changes
+  meta: flush_handlers
+
+- name: Ensure Redis Sentinel is running
+  service: name=redis-sentinel state=started

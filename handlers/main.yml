@@ -1,0 +1,9 @@
+---
+- name: restart redis
+  service: name=redis-server state=restarted
+
+- name: restart sentinel
+  service: name=redis-sentinel state=restarted
+
+- name: restart sysfsutils
+  service: name=sysfsutils state=restarted

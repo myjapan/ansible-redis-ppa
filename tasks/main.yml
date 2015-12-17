@@ -1,0 +1,10 @@
+---
+- include: repository.yml
+- include: install_server.yml
+  when: install_redis_server
+- include: configure_server.yml
+  when: install_redis_server
+- include: install_sentinel.yml
+  when: install_redis_sentinel
+- include: configure_sentinel.yml
+  when: install_redis_sentinel
