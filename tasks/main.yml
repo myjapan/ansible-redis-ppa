@@ -8,3 +8,4 @@
   when: install_redis_sentinel
 - include: configure_sentinel.yml
   when: install_redis_sentinel
+- include: local_facts.yml
