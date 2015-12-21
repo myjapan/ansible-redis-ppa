@@ -1,14 +1,11 @@
 ---
 ## General installation options
+
+# PPA or repository where the Redis DEB packages are available
 redis_repository: ppa:zarigueya/backports-devel
 
 ## Redis Server options
 install_redis_server: true
-redis_user: redis
-redis_nofile_limit: 16384
-redis_disable_thp: true
-
-# General
 redis_daemonize: "yes"
 redis_dir: /var/lib/redis
 redis_pidfile: /var/run/redis/redis-server.pid
@@ -77,6 +74,9 @@ redis_slowlog_log_slower_than: 10000
 redis_slowlog_max_len: 128
 
 redis_latency_monitor_threshold: 0
+
+redis_nofile_limit: 16384
+redis_disable_thp: true
 
 redis_sysctl_tweaks:
   - name: "net.core.somaxconn"
