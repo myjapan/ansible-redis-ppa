@@ -1,9 +1,6 @@
 ---
-- name: Installing Redis Server from DEB package
-  apt: pkg={{ item }} state=present
-  with_items:
-    - redis-server
-    - redis-tools
+- name: Installing Redis Server
+  yum: name=redis state=present
 
 - name: Tweak some kernel sysctl values
   sysctl: name="{{ item.name }}"
@@ -11,25 +8,25 @@
           state={{ item.state }}
   with_items: "{{ redis_sysctl_tweaks }}"
 
-- name: Install sysfsutils package
-  apt: name=sysfsutils state=present
-  when: redis_disable_thp
+# - name: Install sysfsutils package
+#   yum: name=sysfsutils state=present
+#   when: redis_disable_thp
 
-- name: Create /etc/sysfs.d direcroty
-  file:
-    path: /etc/sysfs.d
-    group: root
-    state: directory
-    mode: 0755
-    owner: root
-  when: redis_disable_thp
+# - name: Create /etc/sysfs.d direcroty
+#   file:
+#     path: /etc/sysfs.d
+#     group: root
+#     state: directory
+#     mode: 0755
+#     owner: root
+#   when: redis_disable_thp
 
-- name: Create sysfs config
-  copy:
-    src: etc/sysfs.d/hugepages.conf
-    dest: /etc/sysfs.d/hugepages.conf
-    owner: root
-    group: root
-    mode: 0644
-  when: redis_disable_thp
-  notify: restart sysfsutils
+# - name: Create sysfs config
+#   copy:
+#     src: etc/sysfs.d/hugepages.conf
+#     dest: /etc/sysfs.d/hugepages.conf
+#     owner: root
+#     group: root
+#     mode: 0644
+#   when: redis_disable_thp
+#   notify: restart sysfsutils

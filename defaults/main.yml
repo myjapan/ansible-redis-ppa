@@ -1,15 +1,13 @@
 ---
 ## General installation options
 
-# PPA or repository where the Redis DEB packages are available
-redis_repository: ppa:zarigueya/backports-devel
-
 ## Redis Server options
 install_redis_server: true
 redis_daemonize: "yes"
 redis_dir: /var/lib/redis
 redis_pidfile: /var/run/redis/redis-server.pid
 redis_databases: 16
+redis_protected_mode: "no"
 
 # Networking/connection options
 redis_bind: 0.0.0.0
@@ -26,7 +24,7 @@ redis_socket_path: false
 redis_socket_perm: 755
 
 # Logging
-redis_logfile: /var/log/redis/redis-server.log
+redis_logfile: /var/log/redis/redis.log
 redis_loglevel: notice
 redis_syslog_enabled: "no"
 redis_syslog_ident: redis
@@ -76,7 +74,7 @@ redis_slowlog_max_len: 128
 redis_latency_monitor_threshold: 0
 
 redis_nofile_limit: 16384
-redis_disable_thp: true
+#redis_disable_thp: false
 
 redis_sysctl_tweaks:
   - name: "net.core.somaxconn"
@@ -95,7 +93,7 @@ redis_sentinel_port: 26379
 
 redis_sentinel_dir: /var/lib/redis
 redis_sentinel_pidfile: /var/run/redis/redis-sentinel.pid
-redis_sentinel_logfile: /var/log/redis/redis-sentinel.log
+redis_sentinel_logfile: /var/log/redis/sentinel.log
 redis_sentinel_syslog_ident: sentinel
 
 sentinel_sysctl_tweaks:

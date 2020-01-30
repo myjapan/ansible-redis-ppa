@@ -7,7 +7,7 @@
         mode=0750
 
 - name: Configure Redis Server to start at boot
-  service: name=redis-server
+  service: name=redis
            enabled=yes
 
 - name: Check if log file exists
@@ -18,7 +18,7 @@
   file: path={{ redis_logfile|dirname }}
         state=directory
         owner=redis
-        group=adm
+        group=redis
         mode=0750
   when: redis_logfile != '""'
 
@@ -26,7 +26,7 @@
   file: path={{ redis_logfile }}
         state=touch
         owner=redis
-        group=adm
+        group=redis
         mode=0640
   when: redis_logfile_stat.stat.exists == False and redis_logfile != '""'
 
@@ -37,13 +37,13 @@
         group=redis
         mode=0755
 
-- name: Add Redis Server init config file
-  template: dest=/etc/default/redis-server
-            src=etc/default/redis-server.j2
-            owner=redis
-            group=redis
-            mode=0644
-  notify: restart redis
+# - name: Add Redis Server init config file
+#   template: dest=/etc/default/redis-server
+#             src=etc/default/redis-server.j2
+#             owner=redis
+#             group=redis
+#             mode=0644
+#   notify: restart redis
 
 - name: Ensure config directory exists and has correct owner
   file: path=/etc/redis
@@ -53,7 +53,7 @@
         mode=0750
 
 - name: Create Redis Server configuration file
-  template: dest=/etc/redis/redis.conf
+  template: dest=/etc/redis.conf
             src=etc/redis/redis.conf.j2
             owner=redis
             group=redis
@@ -66,4 +66,4 @@
   meta: flush_handlers
 
 - name: Ensure Redis Server is running
-  service: name=redis-server state=started
+  service: name=redis state=started

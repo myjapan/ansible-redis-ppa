@@ -1,5 +1,6 @@
 ---
-- name: Adding APT repository
-  apt_repository:
-    repo: "{{ redis_repository }}"
-    update_cache: yes
+
+- name: Install Remi Repository
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version  }}.rpm
+    state: present

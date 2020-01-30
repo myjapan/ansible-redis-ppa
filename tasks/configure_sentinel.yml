@@ -45,15 +45,15 @@
             mode=0644
   notify: restart sentinel
 
-- name: Ensure config directory exists and has corect owner
-  file: path=/etc/redis
-        state=directory
-        owner=redis
-        group=redis
-        mode=0750
+# - name: Ensure config directory exists and has corect owner
+#   file: path=/etc/redis
+#         state=directory
+#         owner=redis
+#         group=redis
+#         mode=0750
 
 - name: Create Redis Sentinel configuration file
-  template: dest=/etc/redis/sentinel.conf
+  template: dest=/etc/redis-sentinel.conf
             src=etc/redis/sentinel.conf.j2
             owner=redis
             group=redis

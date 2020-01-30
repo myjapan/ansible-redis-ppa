@@ -2,10 +2,10 @@
 - include: repository.yml
   tags: [redis, sentinel]
 - include: install_server.yml
-  when: install_redis_server
+#  when: install_redis_server
   tags: [redis]
 - include: configure_server.yml
-  when: install_redis_server
+#  when: install_redis_server
   tags: [redis]
 - include: install_sentinel.yml
   when: install_redis_sentinel
